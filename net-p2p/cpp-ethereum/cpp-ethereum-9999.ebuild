@@ -10,7 +10,7 @@ HOMEPAGE="https://www.ethereum.org/"
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="git://github.com/ethereum/cpp-ethereum.git"
+	EGIT_REPO_URI="git://github.com/ethereum/webthree-umbrella.git"
 	KEYWORDS=""
 else
 	SRC_URI=""
@@ -22,6 +22,9 @@ SLOT="0"
 KEYWORDS=""
 IUSE="$IUSE qt5"
 
+#CFLAGS="-fpermissive"
+#CXXFLAGS="-fpermissive"
+
 RDEPEND="
 	qt5? (
 		dev-qt/qtdeclarative:5
@@ -31,7 +34,7 @@ RDEPEND="
 	>=dev-libs/crypto++-5.6.2
 	net-libs/miniupnpc
 	dev-libs/gmp
-	dev-libs/libjson-rpc-cpp"
+	dev-cpp/libjson-rpc-cpp"
 
 DEPEND="${RDEPEND}"
 
@@ -39,8 +42,9 @@ src_configure() {
         local mycmakeargs=(
 				-DCMAKE_BUILD_TYPE=Release
 				-DHEADLESS=1
+				-DEVMJIT=off
         )
 
-		#use qt5 || mycmakeargs="${mycmakeargs} -DHEADLESS=1"
+		use qt5 || mycmakeargs="${mycmakeargs} -DHEADLESS=1"
         cmake-utils_src_configure
 }
